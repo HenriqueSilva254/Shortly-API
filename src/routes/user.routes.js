@@ -7,9 +7,9 @@ import { tokenValidation } from "../middlewares/validationAuth.js";
 const userRouter = Router()
 
 // Cadastro
-userRouter.post("/sign-up",validationSchemas(signUpSchema),  signUp);
+userRouter.post("/signup",validationSchemas(signUpSchema),  signUp);
 // Login 
-userRouter.post("/sign-in",validationSchemas(signInSchema), signIn)
+userRouter.post("/signin",validationSchemas(signInSchema), signIn)
 // Get usuario
 //userRouter.get("/user",tokenValidation, getUser)
 export default userRouter

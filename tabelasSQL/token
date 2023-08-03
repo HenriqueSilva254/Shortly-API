@@ -1,0 +1,7 @@
+CREATE TABLE tokens (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(200) NOT NULL,
+    usuario_id INTEGER NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES users (id) ON DELETE CASCADE
+);
