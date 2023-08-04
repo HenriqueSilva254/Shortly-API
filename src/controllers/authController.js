@@ -37,26 +37,26 @@ export async function signIn(req, res) {
 
     if (user && bcrypt.compareSync(password, user.rows[0].password)) {
       const token = uuid();
-      const usuario_id = user.rows[0].id;
+      const userId = user.rows[0].id;
 
       // Verificar e Atualizar token
 
       const existingToken = await db.query(
-        `SELECT * FROM tokens WHERE usuario_id = $1`,
-        [usuario_id]
+        `SELECT * FROM tokens WHERE userId = $1`,
+        [userId]
       );
 
       if (existingToken.rows.length > 0) {
         // Atualiza o token existente
-        await db.query(`UPDATE tokens SET token = $1 WHERE usuario_id = $2`, [
+        await db.query(`UPDATE tokens SET token = $1 WHERE userId = $2`, [
           token,
-          usuario_id,
+          userId,
         ]);
       } else {
         // Insere um novo token
         await db.query(
-          `INSERT INTO tokens (token, usuario_id) VALUES ($1, $2)`,
-          [token, usuario_id]
+          `INSERT INTO tokens (token, userId) VALUES ($1, $2)`,
+          [token, userId]
         );
       } res.status(200).send({ token });
     } else return res.status(401).send("senha incorreta");
@@ -64,20 +64,3 @@ export async function signIn(req, res) {
     return res.status(404).send(err.message);
   }
 }
-/* 
-export async function getUser(req, res){
-    const {authorization} = req.headers
-    const token = authorization?.replace("Bearer ", "")
-    
-    if (!token) return res.sendStatus(401)
-
-    try {
-        const session = await db.collection('session').findOne({token})
-        if(!session) return res.sendStatus(401)
-        const user = await db.collection('users').findOne({_id: session.userId})
-        res.send(user.name)
-    } catch (err) {
-        return res.status(404).send(err.message);
-    }
-  
-  } */

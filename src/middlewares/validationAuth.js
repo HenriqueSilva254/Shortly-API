@@ -7,8 +7,8 @@ export async function tokenValidation(req, res, next){
     if (!token) return res.sendStatus(401)
 
     try {
-        const session = await db.query(`SELECT * FROM tokens WHERE token = $1`, [token]).findOne({token})
-        if(!session) return res.sendStatus(401)
+        const session = await db.query(`SELECT * FROM tokens WHERE token = $1`, [token])
+        if(session.rows.length === 0) return res.sendStatus(401)
         
         next()
     } catch (err) {
@@ -16,3 +16,5 @@ export async function tokenValidation(req, res, next){
     }
   
   }
+
+  

@@ -10,6 +10,5 @@ const userRouter = Router()
 userRouter.post("/signup",validationSchemas(signUpSchema),  signUp);
 // Login 
 userRouter.post("/signin",validationSchemas(signInSchema), signIn)
-// Get usuario
-//userRouter.get("/user",tokenValidation, getUser)
+
 export default userRouter
