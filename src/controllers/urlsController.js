@@ -37,7 +37,7 @@ export async function getUrl(req, res){
 
   try {
     const getUrl = await db.query(`SELECT url, shortUrl, userId FROM shortly WHERE id=$1`, [id])
-    if(getUrl.rows.length === 0) res.sendStatus(401)
+    if(getUrl.rows.length === 0) res.sendStatus(404)
     res .status(200).send({
       url: getUrl.rows[0].url,
       shorturl: getUrl.rows[0].shorturl,
@@ -48,18 +48,19 @@ export async function getUrl(req, res){
   }
 }
 
-export async function getUrl(req, res){
-  const {id} = req.params
+export async function getShortly(req, res){
+  const {shortUrl} = req.params
 
   try {
-    const getUrl = await db.query(`SELECT url, shortUrl, userId FROM shortly WHERE id=$1`, [id])
-    if(getUrl.rows.length === 0) res.sendStatus(401)
-    res .status(200).send({
-      url: getUrl.rows[0].url,
-      shorturl: getUrl.rows[0].shorturl,
-      userid: getUrl.rows[0].userid
-    })
+    const getUrl = await db.query(`SELECT url FROM shortly WHERE shortUrl = $1`, [shortUrl]);
+    if(getUrl.rows.length === 0) return res.sendStatus(404)
+    const url= getUrl.rows[0].url
+
+    const upVisit = await db.query(`UPDATE shortly SET visitCount=visitCount+1 WHERE shortUrl = $1`, [shortUrl]) 
+
+    res.redirect(url)
   } catch (err) {
     res.status(500).send(err.message)
   }
 }
+
