@@ -56,11 +56,58 @@ export async function getShortly(req, res){
     if(getUrl.rows.length === 0) return res.sendStatus(404)
     const url= getUrl.rows[0].url
 
-    const upVisit = await db.query(`UPDATE shortly SET visitCount=visitCount+1 WHERE shortUrl = $1`, [shortUrl]) 
+    const upVisit = await db.query(`UPDATE shortly SET visitCount=visitCount+1 WHERE shortUrl = $1`, [shortUrl])
 
     res.redirect(url)
   } catch (err) {
     res.status(500).send(err.message)
   }
 }
+
+export async function deleteUrl(req, res){
+  const {id} = req.params
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+
+  try {
+    const tokenQuery = await db.query(
+      `SELECT userId FROM tokens WHERE token = $1`,
+      [token]
+    );
+    const userId = tokenQuery.rows[0].userId;
+
+    const dell = await db.query(`DELETE FROM shortly WHERE id = $1 AND userId = $2`, [id, userId]);
+    if(dell.rowCount === 0) return res.sendStatus(404);
+
+    res.sendStatus(204)
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+}
+
+export async function getUserME(req, res){
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+
+  try {
+    const tokenQuery = await db.query(
+      `SELECT userId FROM tokens WHERE token = $1`,
+      [token]
+    );
+    
+    const userId = tokenQuery.rows[0].userid;
+    console.log(userId)
+    const getUser = await db.query(`SELECT users.id, users.name, SUM(shortly.visitCount) as "visitCount", json_agg(shortly.*) as "shortenedUrls"
+    FROM users
+    JOIN shortly ON users.id = shortly.userId
+    WHERE users.id= $1
+    GROUP BY users.id, users.name;`, [userId]);
+    
+    res.status(200).send(getUser.rows[0])
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+}
+
+
 
