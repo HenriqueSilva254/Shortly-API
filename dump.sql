@@ -5,7 +5,7 @@
 -- Dumped from database version 12.15 (Ubuntu 12.15-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 15.3
 
--- Started on 2023-08-06 12:23:41
+-- Started on 2023-08-06 12:45:34
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -31,7 +31,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 207 (class 1259 OID 90139)
+-- TOC entry 205 (class 1259 OID 90168)
 -- Name: shortly; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -46,7 +46,7 @@ CREATE TABLE public.shortly (
 
 
 --
--- TOC entry 206 (class 1259 OID 90137)
+-- TOC entry 204 (class 1259 OID 90166)
 -- Name: shortly_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -61,7 +61,7 @@ CREATE SEQUENCE public.shortly_id_seq
 
 --
 -- TOC entry 2957 (class 0 OID 0)
--- Dependencies: 206
+-- Dependencies: 204
 -- Name: shortly_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -69,7 +69,7 @@ ALTER SEQUENCE public.shortly_id_seq OWNED BY public.shortly.id;
 
 
 --
--- TOC entry 205 (class 1259 OID 90125)
+-- TOC entry 207 (class 1259 OID 90186)
 -- Name: tokens; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -82,7 +82,7 @@ CREATE TABLE public.tokens (
 
 
 --
--- TOC entry 204 (class 1259 OID 90123)
+-- TOC entry 206 (class 1259 OID 90184)
 -- Name: tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -97,7 +97,7 @@ CREATE SEQUENCE public.tokens_id_seq
 
 --
 -- TOC entry 2958 (class 0 OID 0)
--- Dependencies: 204
+-- Dependencies: 206
 -- Name: tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -105,13 +105,13 @@ ALTER SEQUENCE public.tokens_id_seq OWNED BY public.tokens.id;
 
 
 --
--- TOC entry 203 (class 1259 OID 90114)
+-- TOC entry 203 (class 1259 OID 90157)
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    nome character varying(100) NOT NULL,
+    name character varying(100) NOT NULL,
     email character varying(100) NOT NULL,
     senha character varying(100) NOT NULL,
     createdat timestamp without time zone DEFAULT now()
@@ -119,7 +119,7 @@ CREATE TABLE public.users (
 
 
 --
--- TOC entry 202 (class 1259 OID 90112)
+-- TOC entry 202 (class 1259 OID 90155)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -142,7 +142,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 2813 (class 2604 OID 90142)
+-- TOC entry 2811 (class 2604 OID 90171)
 -- Name: shortly id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -150,7 +150,7 @@ ALTER TABLE ONLY public.shortly ALTER COLUMN id SET DEFAULT nextval('public.shor
 
 
 --
--- TOC entry 2811 (class 2604 OID 90128)
+-- TOC entry 2814 (class 2604 OID 90189)
 -- Name: tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -158,7 +158,7 @@ ALTER TABLE ONLY public.tokens ALTER COLUMN id SET DEFAULT nextval('public.token
 
 
 --
--- TOC entry 2809 (class 2604 OID 90117)
+-- TOC entry 2809 (class 2604 OID 90160)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -166,7 +166,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 2823 (class 2606 OID 90149)
+-- TOC entry 2821 (class 2606 OID 90178)
 -- Name: shortly shortly_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -175,7 +175,7 @@ ALTER TABLE ONLY public.shortly
 
 
 --
--- TOC entry 2821 (class 2606 OID 90131)
+-- TOC entry 2823 (class 2606 OID 90192)
 -- Name: tokens tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -184,7 +184,7 @@ ALTER TABLE ONLY public.tokens
 
 
 --
--- TOC entry 2817 (class 2606 OID 90122)
+-- TOC entry 2817 (class 2606 OID 90165)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -193,7 +193,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2819 (class 2606 OID 90120)
+-- TOC entry 2819 (class 2606 OID 90163)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -202,7 +202,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2825 (class 2606 OID 90150)
+-- TOC entry 2824 (class 2606 OID 90179)
 -- Name: shortly shortly_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -211,7 +211,7 @@ ALTER TABLE ONLY public.shortly
 
 
 --
--- TOC entry 2824 (class 2606 OID 90132)
+-- TOC entry 2825 (class 2606 OID 90193)
 -- Name: tokens tokens_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -219,7 +219,7 @@ ALTER TABLE ONLY public.tokens
     ADD CONSTRAINT tokens_userid_fkey FOREIGN KEY (userid) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
--- Completed on 2023-08-06 12:23:41
+-- Completed on 2023-08-06 12:45:34
 
 --
 -- PostgreSQL database dump complete
