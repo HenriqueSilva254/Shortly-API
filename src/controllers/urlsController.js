@@ -42,7 +42,7 @@ export async function getUrl(req, res) {
     res.status(200).send({
       id: getUrl.rows[0].userid,
       url: getUrl.rows[0].url,
-      shorturl: getUrl.rows[0].shorturl,
+      shortUrl: getUrl.rows[0].shorturl,
     });
   } catch (err) {
     res.status(500).send(err.message);
