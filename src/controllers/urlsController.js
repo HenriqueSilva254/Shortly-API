@@ -77,18 +77,23 @@ export async function deleteUrl(req, res) {
   const token = authorization?.replace("Bearer ", "");
 
   try {
-    const tokenQuery = await db.query(
-      `SELECT userId FROM tokens WHERE token = $1`,
-      [token]
-    );
-    const userId = tokenQuery.rows[0].userid;
+  
+    
+    const checkuser =  await db.query(`SELECT userId FROM shortly WHERE id = $1`, [id])
+    const checktoken =  await db.query(`SELECT userId FROM tokens WHERE token = $1`,[token]);
+
+    if(checkuser.rows.length === 0) return res.sendStatus(404)
+    if(checkuser.rows[0] !== checktoken.rows[0]) return res.sendStatus(401)
+    console.log(checkuser.rows[0])
+    console.log(checktoken.rows[0])
+   
 
     const dell = await db.query(
-      `DELETE FROM shortly WHERE id = $1 AND userId = $2`,
-      [Number(id), userId]
+      `DELETE FROM shortly WHERE id = $1`,
+      [Number(id)]
     );
-    console.log(userId)
-    console.log(Number(id))
+
+    
 
     if (dell.rowCount === 0) return res.sendStatus(404);
       
