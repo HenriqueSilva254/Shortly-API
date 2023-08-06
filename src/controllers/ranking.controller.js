@@ -11,7 +11,7 @@ export async function getRanking(req, res){
         LEFT JOIN shortly ON users.id = shortly.userId
         GROUP BY users.id, users.name
         ORDER BY "visitCount" DESC, "linksCount" DESC
-        LIMIT 10; `)
+        LIMIT 10;` )
         res.status(200).send(ranking.rows)
     } catch (err) {
         res.status(500).send(err.message)
