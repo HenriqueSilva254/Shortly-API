@@ -81,11 +81,11 @@ export async function deleteUrl(req, res) {
     
     const checkuser =  await db.query(`SELECT userId FROM shortly WHERE id = $1`, [id])
     const checktoken =  await db.query(`SELECT userId FROM tokens WHERE token = $1`,[token]);
-
-    if(checkuser.rows.length === 0) return res.sendStatus(404)
-    if(checkuser.rows[0] !== checktoken.rows[0]) return res.sendStatus(401)
     console.log(checkuser.rows[0])
     console.log(checktoken.rows[0])
+    if(checkuser.rows.length === 0) return res.sendStatus(404)
+    if(checkuser.rows[0].userid !== checktoken.rows[0].userid) return res.sendStatus(401)
+    
    
 
     const dell = await db.query(
