@@ -97,10 +97,18 @@ export async function getUserME(req, res){
     
     const userId = tokenQuery.rows[0].userid;
     console.log(userId)
-    const getUser = await db.query(`SELECT users.id, users.name, SUM(shortly.visitCount) as "visitCount", json_agg(shortly.*) as "shortenedUrls"
+    const getUser = await db.query(`SELECT users.id, users.name,
+    CASE
+        WHEN COUNT(shortly.id) > 0 THEN SUM(shortly.visitCount)
+        ELSE 0
+    END AS "visitCount",
+    CASE
+        WHEN COUNT(shortly.id) > 0 THEN json_agg(shortly.*)
+        ELSE '[]'::json
+    END AS "shortenedUrls"
     FROM users
-    JOIN shortly ON users.id = shortly.userId
-    WHERE users.id= $1
+    LEFT JOIN shortly ON users.id = shortly.userId
+    WHERE users.id = $1
     GROUP BY users.id, users.name;`, [userId]);
     
     res.status(200).send(getUser.rows[0])
@@ -108,6 +116,10 @@ export async function getUserME(req, res){
     res.status(500).send(err.message)
   }
 }
+
+
+
+
 
 
 
