@@ -22,7 +22,7 @@ export async function postUrl(req, res) {
       [shortUrl]
     );
 
-    res.status(200).send({
+    res.status(201).send({
       id: resShorty.rows[0].id,
       shortUrl: resShorty.rows[0].shorturl,
     });
