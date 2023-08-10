@@ -58,7 +58,7 @@ export async function signIn(req, res) {
           `INSERT INTO tokens (token, userId) VALUES ($1, $2)`,
           [token, userId]
         );
-      } res.status(200).send({ token });
+      } res.status(200).send({ token, name: user.rows[0].name });
     } else return res.status(401).send("senha incorreta");
   } catch (err) {
     return res.status(404).send(err.message);
